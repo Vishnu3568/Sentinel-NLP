@@ -1,0 +1,21 @@
+# Virtual Environments
+.venv/
+venv/
+Sentinal NLP/
+Sentinel-NLP/
+
+# Python cache & artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Environments & secrets
+.env
+.env.local
