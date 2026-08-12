@@ -1,0 +1,8 @@
+{
+    "text_features": "TF-IDF unigram",
+    "numeric_features": [
+        "digit_count"
+    ],
+    "model": "LogisticRegression",
+    "selection_reason": "Highest F1-score with improved recall and reduced false negatives compared with baseline."
+}
