@@ -1,6 +1,7 @@
 from pathlib import Path
 import json
 import re
+from functools import lru_cache
 
 import joblib
 from scipy.sparse import hstack
@@ -15,7 +16,9 @@ with open(MODEL_DIR / "feature_config.json", "r") as f:
 THRESHOLD = 0.30
 
 
+@lru_cache(maxsize=1)
 def load_artifacts():
+
     """Load the trained vectorizer, scaler, and classifier."""
     vectorizer = joblib.load(
         MODEL_DIR / "digit_count_tfidf_vectorizer.pkl"
