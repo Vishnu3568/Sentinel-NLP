@@ -1,5 +1,7 @@
+from typing import Annotated
+
 from fastapi import FastAPI
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, StringConstraints
 
 from src.inference import predict_spam
 
@@ -12,8 +14,10 @@ app = FastAPI(
 
 
 class PredictionRequest(BaseModel):
-    message: str = Field(
-        min_length=1,
+    message: Annotated[
+        str,
+        StringConstraints(strip_whitespace=True, min_length=1),
+    ] = Field(
         description="SMS message to classify as spam or ham.",
         examples=[
             "Congratulations! You have won a free prize. Call 08001234567 now."

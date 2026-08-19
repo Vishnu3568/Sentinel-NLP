@@ -60,3 +60,22 @@ def test_empty_message_is_rejected():
     )
 
     assert response.status_code == 422
+
+
+def test_whitespace_message_is_rejected():
+    response = client.post(
+        "/predict",
+        json={"message": "   "},
+    )
+
+    assert response.status_code == 422
+
+
+def test_non_string_message_is_rejected():
+    response = client.post(
+        "/predict",
+        json={"message": 123},
+    )
+
+    assert response.status_code == 422
+
