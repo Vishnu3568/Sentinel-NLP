@@ -1,16 +1,38 @@
+import logging
 from typing import Annotated
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field, StringConstraints
 
 from src.inference import predict_spam
 
+logger = logging.getLogger(__name__)
 
 app = FastAPI(
     title="Sentinel-NLP Spam Detection API",
     description="Production API for SMS spam classification using a trained NLP model.",
     version="1.0.0",
 )
+
+
+@app.exception_handler(Exception)
+async def unhandled_exception_handler(
+    request: Request,
+    exc: Exception,
+):
+    logger.exception(
+        "Unhandled exception while processing %s %s",
+        request.method,
+        request.url.path,
+    )
+
+    return JSONResponse(
+        status_code=500,
+        content={
+            "detail": "Prediction service temporarily unavailable."
+        },
+    )
 
 
 class PredictionRequest(BaseModel):

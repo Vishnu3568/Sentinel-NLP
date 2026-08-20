@@ -79,3 +79,23 @@ def test_non_string_message_is_rejected():
 
     assert response.status_code == 422
 
+
+def test_unhandled_exception_returns_500(monkeypatch):
+    def fake_predict_spam(message):
+        raise RuntimeError("simulated model failure")
+
+    monkeypatch.setattr("src.api.predict_spam", fake_predict_spam)
+
+    custom_client = TestClient(app, raise_server_exceptions=False)
+    response = custom_client.post(
+        "/predict",
+        json={"message": "Hello, how are you?"},
+    )
+
+    assert response.status_code == 500
+    assert response.json() == {
+        "detail": "Prediction service temporarily unavailable."
+    }
+
+
+
